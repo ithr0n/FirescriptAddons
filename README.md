@@ -23,6 +23,10 @@
 
 # LondonStudios for make HoseLS
 
+# If using ESX
+
+1, go to config.lua line 18 and 30
+
 
 # for vrp
 

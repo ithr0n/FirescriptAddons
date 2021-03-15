@@ -1,6 +1,7 @@
 --================================--
---       FIRE SCRIPT v1.6.3       --
+--       FIRE SCRIPT v1.7.2       --
 --  by GIMI (+ foregz, Albo1125)  --
+--  make some function ny Wick	  --
 --      License: GNU GPL 3.0      --
 --================================--
 
@@ -11,16 +12,16 @@ function checkVersion()
 			if tonumber(errorCode) == 200 then
 				data = json.decode(data)
 				if not data then
-					print("^3[FireScript]^7 Couldn't check version - no data returned!")
+					print("^3[FireScript]^7 Kunne ikke kontrollere versionen - ingen data blev returneret!")
 					return
 				end
 				if data.tag_name == "v" .. Version then
-					print("^2[FireScript]^7 Up to date.")
+					print("^2[FireScript]^7 Opdateret.")
 				else
-					print(("^3[FireScript]^7 The script isn't up to date! Please update to version %s."):format(data.tag_name))
+					print(("^3[FireScript]^7 Scriptet er ikke opdateret! Opdater venligst til version %s."):format(data.tag_name))
 				end
 			else
-				print(("^3[FireScript]^7 Couldn't check version! Error code %s."):format(errorCode))
+				print(("^3[FireScript]^7 Kunne ikke kontrollere version! Fejlkode %s."):format(errorCode))
 				print(LatestVersionFeed)
 			end
 		end,
