@@ -23,15 +23,16 @@
 
 # LondonStudios for make HoseLS
 
+
 # for vrp
 
 1. Add this line to Client.lua make your own
-
+```
 RegisterNetEvent("ondutyfire")
 AddEventHandler("ondutyfire", function()
   TriggerServerEvent('fireDispatch:registerPlayer', -1, subscribe)
 end)
-
+```
 
 ---------------Text3D-----------------------
 ```
