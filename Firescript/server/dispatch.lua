@@ -137,7 +137,7 @@ end)
 function TriggerFireScript(coords, fireIndex, flameIndex)
     if cooldown == false then -- Double check here in case multiple fires start at once
         cooldown = true
-		 TriggerEvent('fireServer:StartFire', sender, position, inensity, radius)
+		 TriggerClientEvent('fireClient:createFlame', -1, fireIndex, flameIndex, coords)
         if Config.Dispatch.timeout ~= false then
             StartTimeout()
         end
@@ -164,7 +164,7 @@ function StartTimeout() -- Fire timeout (safety in case somehow the fire can not
             timeouttimer = true
             SetTimeout((Config.Dispatch.timeout * 60000), function()
                 if timeouttimer == true then
-                    TriggerClientEvent('fireClient:FireTimeout', -1)
+                   TriggerClientEvent('fireClient:removeFire', -1, fireIndex)
                     print('[^1Brand^7] BRAND HAR TIMED OUT')
                     timeouttimer = false
                 end
