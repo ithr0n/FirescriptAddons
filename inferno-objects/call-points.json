@@ -1,0 +1,192 @@
+[
+    {
+        "Channel"   :   1,
+        "Location"  :   "Mission Row Police Station",
+        "Control"   :   1,
+        "Devices"   :   [
+            {
+                "ID"        :   1,
+                "Prop"      :   "hei_prop_bank_alarm_01",
+                "x"         :   434.95,
+                "y"         :   -985.2,
+                "z"         :   30.9,
+                "rx"        :   0,
+                "ry"        :   0,
+                "rz"        :   90,
+                "Location"  :   "Next to main front door"
+            },
+
+            {
+                "ID"        :   2,
+                "Prop"      :   "hei_prop_bank_alarm_01",
+                "x"         :   449.89,
+                "y"         :   -984.9,
+                "z"         :   30.9,
+                "rx"        :   0,
+                "ry"        :   0,
+                "rz"        :   270,
+                "Location"  :   "Near armory door"
+            },
+            
+            {
+                "ID"        :   3,
+                "Prop"      :   "hei_prop_bank_alarm_01",
+                "x"         :   439.345,
+                "y"         :   -996.5,
+                "z"         :   30.9,
+                "rx"        :   0,
+                "ry"        :   0,
+                "rz"        :   180,
+                "Location"  :   "Inside briefing room"
+            },
+
+            {
+                "ID"        :   4,
+                "Prop"      :   "hei_prop_bank_alarm_01",
+                "x"         :   460.76,
+                "y"         :   -988.44,
+                "z"         :   30.9,
+                "rx"        :   0,
+                "ry"        :   0,
+                "rz"        :   270,
+                "Location"  :   "Inside locker room"
+            },
+
+            {
+                "ID"        :   5,
+                "Prop"      :   "hei_prop_bank_alarm_01",
+                "x"         :   462.29,
+                "y"         :   -984.27,
+                "z"         :   30.9,
+                "rx"        :   0,
+                "ry"        :   0,
+                "rz"        :   0,
+                "Location"  :   "Inside stairwell level 1"
+            },
+
+            {
+                "ID"        :   6,
+                "Prop"      :   "hei_prop_bank_alarm_01",
+                "x"         :   465.68,
+                "y"         :   -981.68,
+                "z"         :   43.69,
+                "rx"        :   0,
+                "ry"        :   0,
+                "rz"        :   0,
+                "Location"  :   "Inside stairwell roof level"
+            },
+
+            {
+                "ID"        :   7,
+                "Prop"      :   "hei_prop_bank_alarm_01",
+                "x"         :   455.85,
+                "y"         :   -986.49,
+                "z"         :   26.9,
+                "rx"        :   0,
+                "ry"        :   0,
+                "rz"        :   180,
+                "Location"  :   "Near fire panel and stairs"
+            },
+
+            {
+                "ID"        :   8,
+                "Prop"      :   "hei_prop_bank_alarm_01",
+                "x"         :   462.575,
+                "y"         :   -987.5,
+                "z"         :   25.2,
+                "rx"        :   0,
+                "ry"        :   0,
+                "rz"        :   0,
+                "Location"  :   "Near fire panel and cells"
+            }
+        ]
+    },
+	
+	{
+        "Channel"   :   1,
+        "Location"  :   "Maze Bank Arena",
+		"Control"   :   2,
+        "Devices"   :   [
+            {
+                "ID"        :   1,
+                "Prop"      :   "hei_prop_bank_alarm_01",
+                "x"         :   -249.85,
+                "y"         :   -2020,
+                "z"         :   30.15,
+                "rx"        :   0,
+                "ry"        :   0,
+                "rz"        :   235,
+                "Location"  :   "Left of main entry"
+            },
+
+            {
+                "ID"        :   2,
+                "Prop"      :   "hei_prop_bank_alarm_01",
+                "x"         :   -260.80,
+                "y"         :   -2033.05,
+                "z"         :   30.15,
+                "rx"        :   0,
+                "ry"        :   0,
+                "rz"        :   220,
+                "Location"  :   "Right of main entry"
+            }
+        ]
+    },
+
+	{
+        "Channel"   :   1,
+        "Location"  :   "Bilforhandler",
+		"Control"   :   3,
+        "Devices"   :   [
+            {
+                "ID"        :   1,
+                "Prop"      :   "hei_prop_bank_alarm_01",
+                "x"         :   -26.55,
+                "y"         :   -1087.75,
+                "z"         :   26.42,
+                "rx"        :   0,
+                "ry"        :   0,
+                "rz"        :   341,
+                "Location"  :   "ved værksted"
+            }
+        ]
+    },
+	
+	{
+        "Channel"   :   1,
+        "Location"  :   "Bilforhandler",
+		"Control"   :   3,
+        "Devices"   :   [
+            {
+                "ID"        :   2,
+                "Prop"      :   "hei_prop_bank_alarm_01",
+                "x"         :   -32.76,
+                "y"         :   -1100.40,
+                "z"         :   26.42,
+                "rx"        :   0,
+                "ry"        :   0,
+                "rz"        :   248,
+                "Location"  :   "ved Shop"
+            }
+        ]
+    },
+	
+	{
+        "Channel"   :   1,
+        "Location"  :   "Bilforhandler",
+		"Control"   :   3,
+        "Devices"   :   [
+            {
+                "ID"        :   3,
+                "Prop"      :   "hei_prop_bank_alarm_01",
+                "x"         :   -52.29,
+                "y"         :   -1087.59,
+                "z"         :   26.42,
+                "rx"        :   0,
+                "ry"        :   0,
+                "rz"        :   341,
+                "Location"  :   "ved hoved indgang"
+            }
+        ]
+    }
+]
