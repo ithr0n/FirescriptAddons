@@ -1,3 +1,6 @@
+![Logo](https://i.imgur.com/lKBSPoC.png)
+
+
 # FirescriptAddons
 [Firescript addons] all in one addons
 
