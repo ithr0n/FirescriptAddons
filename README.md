@@ -25,7 +25,7 @@
 
 # for vrp
 
-- Client.lua
+1. Add this line to Client.lua make your own
 
 RegisterNetEvent("ondutyfire")
 AddEventHandler("ondutyfire", function()
@@ -34,6 +34,7 @@ end)
 
 
 ---------------Text3D-----------------------
+```
 function DrawText3Ds(x,y,z, text)
     local onScreen,_x,_y=World3dToScreen2d(x,y,z)
     local px,py,pz=table.unpack(GetGameplayCamCoords())
@@ -49,7 +50,8 @@ function DrawText3Ds(x,y,z, text)
     local factor = (string.len(text)) / 370
     DrawRect(_x,_y+0.0125, 0.015+ factor, 0.03, 41, 11, 41, 68)
   end
-
+```
+```
 Citizen.CreateThread(function()
     Citizen.Wait(1)
     while true do
@@ -64,15 +66,16 @@ Citizen.CreateThread(function()
       end
     end
 end)
+```
 
-
-- server.lua
-
+2. Add this line to server.lua
+```
 RegisterNetEvent("offdutyfire")
 AddEventHandler("offdutyfire", function()
   TriggerServerEvent('fireDispatch:removePlayer', -1, unsubscribe)
 end)
-
+```
+```
 RegisterServerEvent('wk:job')
 AddEventHandler('wk:job', function()
     local source = source
@@ -88,37 +91,43 @@ AddEventHandler('wk:job', function()
 		end
 	end
 end)
+```
 
 # VRP2 
 
-- Client.lua have make my own Functions resources
-
+1. Client.lua have make my own Functions resources
+```
 function Functions:onDuty()
   TriggerServerEvent('fireDispatch:registerPlayer', -1, subscribe)
 end
-
+```
+```
 function Functions:offDuty()
   TriggerServerEvent('fireDispatch:removePlayer', -1, unsubscribe)
 end
+```
 
-- \vrp\cfg\groups
+2. \vrp\cfg\groups
 
-
+```
 function ems_init(user)
   vRP.EXT.Functions.remote._onDuty(user.source)
 end
-
+```
+```
 function ems_onjoin(user)
   ems_init(user)
 end
-
+```
+```
 function ems_onleave(user)
   vRP.EXT.Functions.remote._offDuty(user.source)
   user:removeCloak()
 end
-
+```
+```
 function ems_onspawn(user)
   ems_init(user)
 end
-
+```
 
