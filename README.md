@@ -4,6 +4,10 @@
 # FirescriptAddons
 [Firescript addons] all in one addons
 
+https://www.youtube.com/watch?v=9GNn7LMddy8 (a year ago)
+
+https://www.youtube.com/watch?v=ugzoOLsgEt0 (Now)
+
 - start Firescript
 
 - start HoseLS
