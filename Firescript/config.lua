@@ -30,27 +30,3 @@ Config.Dispatch = {
     playSound = true,
     enableESX = "fd" -- Set to a ESX job / jobs you want to be automatically subscribed to dispatch; Set to nil or false if you don't want to use this
 }
-
-Config.EnableTriggers = true
-
--- ### Do not touch below this line without reading the instructions ### --
-
-Config.Triggers = {
-    {
-        id = 3, 
-        chance = true,
-        chanceodds = 5, -- 20%
-        explosion = false,
-        size = math.random(10,20),
-        intensity = math.random(10,20),
-        name = 'Molotov Cocktail'
-    },
-    {
-        id = 7, 
-        chance = false,
-        explosion = false,
-        size = math.random(4,6),
-        intensity = math.random(20,30),
-        name = 'Car Explosion'
-    },
-}
