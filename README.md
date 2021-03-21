@@ -20,6 +20,9 @@ https://www.youtube.com/watch?v=ugzoOLsgEt0 (Now)
 
 - start inferno-ladders 
 
+- FireExplosion (not full done)
+
+add exec "resources/[Firescript addons]\inferno-fire-ems-pager/inferno-fire-ems-pager.cfg" to server.cfg
 
 # Credits
 
