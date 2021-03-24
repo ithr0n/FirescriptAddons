@@ -173,16 +173,7 @@ AddEventHandler("Fire-EMS-Pager:return:WhitelistCheck", function(NewWhitelist)
 		-- If their pager is still not enabled
 		if not Pager.Enabled then
 			-- Send reminder
-			--NewNoti("~y~Glem ikke at indstille din personsøger!", true)
-			TriggerEvent("pNotify:SendNotification",{
-			text = "Glem ikke at indstille din personsøger",
-			type = "error",
-			timeout = (5000),
-			layout = "centerLeft",
-			queue = "global",
-			animation = {
-			open = "gta_effects_fade_in", 
-			close = "gta_effects_fade_out"}})
+			NewNoti("~y~Glem ikke at indstille din personsøger!", true)
 		end
 	end
 end)
@@ -747,6 +738,8 @@ function NewNoti(Text, Flash)
 		SetNotificationTextEntry("STRING")
 		-- Pass temporary variable to notification
 		AddTextComponentString(Text)
+		-- test 
+		SetNotificationMessage("CHAR_CALL911", "CHAR_CALL911", true, 1, "~y~Brandmand Information:~s~", "");
 		-- Draw new notification on client's screen
 		DrawNotification(Flash, true)
 	end

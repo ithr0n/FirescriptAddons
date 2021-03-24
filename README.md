@@ -48,6 +48,13 @@ AddEventHandler("ondutyfire", function()
 end)
 ```
 
+```
+RegisterNetEvent("offdutyfire")
+AddEventHandler("offdutyfire", function()
+  TriggerServerEvent('fireDispatch:removePlayer', -1, unsubscribe)
+end)
+```
+
 ---------------Text3D-----------------------
 ```
 function DrawText3Ds(x,y,z, text)
@@ -84,12 +91,6 @@ end)
 ```
 
 2. Add this line to server.lua
-```
-RegisterNetEvent("offdutyfire")
-AddEventHandler("offdutyfire", function()
-  TriggerServerEvent('fireDispatch:removePlayer', -1, unsubscribe)
-end)
-```
 ```
 RegisterServerEvent('wk:job')
 AddEventHandler('wk:job', function()
