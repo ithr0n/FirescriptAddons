@@ -1,5 +1,9 @@
 ![Logo](https://i.imgur.com/lKBSPoC.png)
 
+[![License GNU-GPL v3](https://img.shields.io/github/license/gimicze/firescript?style=for-the-badge)](https://github.com/Wick89/FirescriptAddons/blob/main/LICENSE "License")
+[![Latest release](https://img.shields.io/github/v/release/gimicze/firescript?style=for-the-badge)](https://github.com/Wick89/FirescriptAddons/releases "Latest release")
+[![Total downloads](https://img.shields.io/github/downloads/gimicze/firescript/total?style=for-the-badge)](https://github.com/Wick89/FirescriptAddons/releases "Total downloads")
+
 
 # FirescriptAddons
 [Firescript addons] all in one addons
