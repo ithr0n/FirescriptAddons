@@ -41,6 +41,19 @@ add exec "resources/[Firescript addons]\inferno-fire-ems-pager/inferno-fire-ems-
 1, go to config.lua line 18 and 32
 
 
+# use qb-target / eyes
+
+1, add it
+
+
+RegisterNetEvent('Toggle:LSFDDuty')
+AddEventHandler('Toggle:LSFDDuty', function()
+    onDuty = not onDuty
+    TriggerServerEvent("QBCore:ToggleDuty")
+    TriggerServerEvent("fire:server:firedispatch", source) -- for firecall 
+end)
+
+
 # for vrp
 
 1. Add this line to Client.lua make your own
