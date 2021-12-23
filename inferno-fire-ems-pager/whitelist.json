@@ -6,5 +6,29 @@
 		"firesiren"		:	true,
 		"cancelpage"	:	true,
 		"pagerwhitelist": 	true
+	},
+	{
+		"steamhex"		:	"steam:1100001046392fc",
+		"pager"			:	true,
+		"page"			:	true,
+		"firesiren"		:	true,
+		"cancelpage"	:	true,
+		"pagerwhitelist": 	false
+	},
+	{
+		"steamhex"		:	"steam:110000103d33a6b",
+		"pager"			:	true,
+		"page"			:	true,
+		"firesiren"		:	true,
+		"cancelpage"	:	true,
+		"pagerwhitelist": 	false
+	},
+	{
+		"steamhex"		:	"steam:11000010d565819",
+		"pager"			:	true,
+		"page"			:	true,
+		"firesiren"		:	true,
+		"cancelpage"	:	true,
+		"pagerwhitelist": 	false
 	}
 ]

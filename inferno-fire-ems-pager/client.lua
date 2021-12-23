@@ -28,7 +28,7 @@ Config.PageSep = "-"
 -- Default fire department name, used in /page command
 Config.DeptName = "Los Santos Fire"
 -- Default text shown when page details are not provided
-Config.DefaultDetails = "Rapporter til stationen"
+Config.DefaultDetails = "Report to the Fire Station"
 -- Time in ms between the beginning of each tone played.
 -- 7.5 seconds by default, do not edit unless you need to
 Config.WaitTime = 7500
@@ -107,8 +107,8 @@ end)
 AddEventHandler("onClientMapStart", function()
 	if Config.ChatSuggestions then
 		-- Create a temporary variables to add more text to
-		local ValidTones = "Gyldige toner:"
-		local ValidStations = "Gyldige stationer:"
+		local ValidTones = "Valid tones:"
+		local ValidStations = "Valid stations:"
 
 		-- Loop though all the tones
 		for _, Tone in ipairs(Pager.Tones) do
@@ -122,27 +122,27 @@ AddEventHandler("onClientMapStart", function()
 			ValidStations = ValidStations .. " " .. Station.Name
 		end
 
-		TriggerEvent("chat:addSuggestion", "/pager", "Fra at allerede er indstillet, slukker for personsøger. Fra personsøgeren er slået, skal du indtaste toner, der skal indstilles til, eller hvis de allerede er indstillet, toner, der skal indstilles til. Sæt et mellemrum mellem hver tone.", {
+		TriggerEvent("chat:addSuggestion", "/pager", "From already set, pager turns off. From the pager is turned on, enter tones to set to, or if already set, tones to set to. Put a space between each note.", {
 			{ name = "tone", help = ValidTones }
 		})
 
-		TriggerEvent("chat:addSuggestion", "/page", "Hvis der ikke i øjeblikket er nogen andre toner, der indtastes toner. Sæt et mellemrum mellem hver tone.", {
+		TriggerEvent("chat:addSuggestion", "/page", "If there are currently no other tones, tones are entered. Put a space between each note.", {
 			{ name = "tones", help = ValidTones },
-			{ name = "- call details", help = "For at tilføje valgfrie detaljer skal du tilføje et mellemrum efter den sidste tone, derefter en '-', derefter en anden plads og derefter dine detaljer. For eksempel: /page fire medical - Dine detaljer går her" }
+			{ name = "- call details", help = "To add optional details, add a space after the last note, then one '-', then another space and then your details. For example: /page fire or medical - Your details go here" }
 		})
 
-		TriggerEvent("chat:addSuggestion", "/cancelpage", "Afspiller annulleringstone for valgte toner og viser ignorering af anmeldelse.", {
+		TriggerEvent("chat:addSuggestion", "/cancelpage", "Plays the cancel tone of selected tones and shows notification ignition.", {
 			{ name = "tones", help = ValidTones },
-			{ name = "- disregard details", help = "Hvis du vil tilføje valgfri ignorering af detaljer, skal du tilføje et mellemrum efter den sidste tone, derefter et '-', derefter et andet mellemrum og derefter dine detaljer. For eksempel: /cancelpage fire medical - Din ignorering Detaljer Gå her" }
+			{ name = "- disregard details", help = "To add optional ignorance of details, add a space after the last note, then one '-', hen another space and then your details. For example: /cancelpage fire or medical - Your Ignore Details Go here" }
 		})
 
-		TriggerEvent("chat:addSuggestion", "/firesiren", "Hvis der i øjeblikket ikke lyder andre sirener, vil der ske ildsiren på indtastede stationer. Sæt et mellemrum mellem hver station.", {
+		TriggerEvent("chat:addSuggestion", "/firesiren", "If there are currently no other sirens, the fire siren will sound at the entered stations. Put a space between each station", {
 			{ name = "stations", help = ValidStations }
 		})
 
-		TriggerEvent("chat:addSuggestion", "/pagerwhitelist", "Føj til eller genindlæs kommandoen whitelist.", {
-			{ name = "{reload} or {player hex/server id}", help = "Type 'reload' for at genindlæse whitelist, eller hvis du tilføjer til whitelist, skriv player's steam hex, eller sætte player's server ID fra player list." },
-			{ name = "commands", help = "Liste over alle de kommandoer, du vil have denne person til at få adgang til."}
+		TriggerEvent("chat:addSuggestion", "/pagerwhitelist", "Add or reload the whitelist command.", {
+			{ name = "{reload} or {player hex/server id}", help = "Type 'reload' to reload whitelist, or if you add to whitelist, type player's steam hex, or set player's server ID from player list." },
+			{ name = "commands", help = "List all the commands you want this person to access."}
 		})
 	end
 
@@ -173,7 +173,7 @@ AddEventHandler("Fire-EMS-Pager:return:WhitelistCheck", function(NewWhitelist)
 		-- If their pager is still not enabled
 		if not Pager.Enabled then
 			-- Send reminder
-			NewNoti("~y~Glem ikke at indstille din personsøger!", true)
+			NewNoti("~y~Do not forget to set your pager!", true)
 		end
 	end
 end)
@@ -206,7 +206,7 @@ RegisterCommand("pager", function(Source, Args)
 			-- in the first place
 			if not #Args ~= #Pager.TunedTo and #Args ~= 0 then
 				-- Create a temporary variable to add more text to
-				local NotificationText = "~g~personsøger indstillet til:~y~"
+				local NotificationText = "~g~pager set to:~y~"
 				-- Loop though all the tones that the client will be tuned to
 				for _, Tone in ipairs(Pager.TunedTo) do
 					-- Add them to the temporary variable
@@ -217,7 +217,7 @@ RegisterCommand("pager", function(Source, Args)
 				Pager.Enabled = true
 			-- If there is a mismatch, i.e. invalid/no tone/s provided
 			else
-				NewNoti("~r~~h~Ugyldige toner, tjek venligst dine personsøger.", true)
+				NewNoti("~r~~h~Invalid tones, please check your pagers.", true)
 				-- Ensure the client's pager is locally disabled
 				Pager.Enabled = false
 				Pager.TunedTo = {}
@@ -234,7 +234,7 @@ RegisterCommand("pager", function(Source, Args)
 				EnablePager()
 			-- If no tones where provided, and they just want it turned off
 			else
-				NewNoti("~g~personsøger blev slukket.", false)
+				NewNoti("~g~pager was turned off.", false)
 				-- Ensure the client's pager is locally disabled
 				Pager.Enabled = false
 				Pager.TunedTo = {}
@@ -242,7 +242,7 @@ RegisterCommand("pager", function(Source, Args)
 		end
 	-- If player is not whitelisted
 	else
-		NewNoti("~r~Du er ikke whitelisted til denne kommando.", true)
+		NewNoti("~r~You are not whitelisted to this command.", true)
 	end
 end)
 
@@ -302,7 +302,7 @@ RegisterCommand("cancelpage", function(Source, Args)
 			-- in the first place
 			if not ToneCount ~= #ToBeCanceled and ToneCount ~= 0 then
 				-- Create a temporary variable to add more text to
-				local NotificationText = "~g~Annullering:~y~"
+				local NotificationText = "~g~Cancel:~y~"
 				-- Loop though all the tones
 				for _, Tone in ipairs(ToBeCanceled) do
 					-- Add a tone to temporary string
@@ -313,15 +313,15 @@ RegisterCommand("cancelpage", function(Source, Args)
 				TriggerServerEvent("Fire-EMS-Pager:CancelPage", ToBeCanceled, HasDetails, Args)
 			-- If there is a mismatch, i.e. invalid/no tone/s provided
 			else
-				NewNoti("~r~~h~Ugyldige toner, tjek venligst dine kommando.", true)
+				NewNoti("~r~~h~Invalid tones, please check your commands.", true)
 			end
 		-- If tones are already being paged
 		else
-			NewNoti("~r~~h~Der undersøges toner, vent venligst.", true)
+			NewNoti("~r~~h~Tones are being examined, please wait.", true)
 		end
 	-- If player is not whitelisted
 	else
-		NewNoti("~r~Du er ikke whitelist til denne kommando.", true)
+		NewNoti("~r~You are not whitelisted for this command.", true)
 	end
 end)
 
@@ -333,7 +333,7 @@ RegisterCommand("pagerwhitelist", function(Source, Args)
 		if Args[1] and Args[1]:lower() == "reload" then
 			-- Tell server to reload the whitelist on all clients
 			TriggerServerEvent("Fire-EMS-Pager:WhitelistReload")
-			NewNoti("~g~Genindlæs whitelist fuldført.", true)
+			NewNoti("~g~Reload whitelist completed.", true)
 		elseif Args[1] then
 			-- Temporary variable for steam hex
 			local ID
@@ -380,14 +380,14 @@ RegisterCommand("pagerwhitelist", function(Source, Args)
 
 			-- Tell the server to add the new entry to the whitelist and reload
 			TriggerServerEvent("Fire-EMS-Pager:WhitelistAdd", ID, Entry)
-			NewNoti("~g~" .. ID .. " Føjet til whitelist med succes.", true)
+			NewNoti("~g~" .. ID .. " Added to whitelist successfully.", true)
 		-- If first argument not set
 		else
-			NewNoti("~r~Fejl, ikke nok argumenter.", true)
+			NewNoti("~r~Error, not enough arguments.", true)
 		end
 	-- If player is not whitelisted
 	else
-		NewNoti("~r~Du er ikke whitelist til denne kommando.", true)
+		NewNoti("~r~You are not whitelisted for this command.", true)
 	end
 end)
 
@@ -413,7 +413,7 @@ AddEventHandler("Fire-EMS-Pager:PlayTones", function(Tones, HasDetails, Details)
 
 		-- If the player is tuned to one or more of the tones being paged
 		if NeedToPlay then
-			NewNoti("~g~~h~Din personsøger aktiveres!", true)
+			--NewNoti("~g~~h~Din personsøger aktiveres!", true)
 			Citizen.Wait(1500)
 			-- Loop though all tones that need to be paged
 			for _, Tone in ipairs(Tones) do
@@ -431,7 +431,7 @@ AddEventHandler("Fire-EMS-Pager:PlayTones", function(Tones, HasDetails, Details)
 				-- If player is tuned to this tone
 				if Tuned then
 					TriggerEvent("Fire-EMS-Pager:Bounce:NUI", "PlayTone", "vibrate")
-					NewNoti("~h~~y~" .. Tone:upper() ..  " opkald!", true)
+					NewNoti("~h~~y~" .. Tone:upper() ..  " Reports!", true)
 				-- If player is not tuned to it
 				else
 					TriggerEvent("Fire-EMS-Pager:Bounce:NUI", "PlayTone", Tone)
@@ -478,7 +478,7 @@ AddEventHandler("Fire-EMS-Pager:PlayTones", function(Tones, HasDetails, Details)
 					-- Red
 					color = { 255, 0, 0},
 					multiline = true,
-					args = {"Brand kontrol", "\nOpmærksomhed " .. Config.DeptName .. " - " .. NewDetails .. " - " .. NewTones .. "Emergency.\n\nTiden er gået " .. Hours .. Minutes.. "."}
+					args = {"Fire control", "\nAttention " .. Config.DeptName .. " - " .. NewDetails .. " - " .. NewTones .. "Emergency.\n\nTime out " .. Hours .. Minutes.. "."}
 				})
 			-- If no details provided
 			else
@@ -488,7 +488,7 @@ AddEventHandler("Fire-EMS-Pager:PlayTones", function(Tones, HasDetails, Details)
 					-- Red
 					color = { 255, 0, 0},
 					multiline = true,
-					args = {"Brand kontrol", "\nOpmærksomhed " .. Config.DeptName .. " - " .. Config.DefaultDetails .. ".\n\nTiden er gået " .. Hours .. Minutes.. "."}
+					args = {"Fire control", "\nAttention " .. Config.DeptName .. " - " .. Config.DefaultDetails .. ".\n\nTime out " .. Hours .. Minutes.. "."}
 				})
 			end
 		else
@@ -537,7 +537,7 @@ AddEventHandler("Fire-EMS-Pager:CancelPage", function(Tones, HasDetails, Details
 
 		-- If the player is tuned to one or more of the tones being paged
 		if NeedToPlay then
-			NewNoti("~g~~h~Din personsøger aktiveres!", true)
+			NewNoti("~g~~h~Your pager is activated!", true)
 			Citizen.Wait(1500)
 
 			TriggerEvent("Fire-EMS-Pager:Bounce:NUI", "PlayTone", "cancel")
@@ -559,7 +559,7 @@ AddEventHandler("Fire-EMS-Pager:CancelPage", function(Tones, HasDetails, Details
 					-- Red
 					color = { 255, 0, 0},
 					multiline = true,
-					args = {"Brand kontrol", "\nOpmærksomhed " .. Config.DeptName .. " - Opkald annulleret, se bort fra svaret - " .. NewDetails}
+					args = {"Fire control", "\nAttention " .. Config.DeptName .. " - Call canceled, ignore the answer - " .. NewDetails}
 				})
 			-- If no details provided
 			else
@@ -569,7 +569,7 @@ AddEventHandler("Fire-EMS-Pager:CancelPage", function(Tones, HasDetails, Details
 					-- Red
 					color = { 255, 0, 0},
 					multiline = true,
-					args = {"Brand kontrol", "\nOpmærksomhed " .. Config.DeptName .. " - Opkald annulleret, se bort fra svaret."}
+					args = {"Fire control", "\nAttention " .. Config.DeptName .. " - Call canceled, ignore the answer."}
 				})
 			end
 		else
@@ -657,7 +657,7 @@ function PagePagers(Args)
             -- in the first place
             if not ToneCount ~= #ToBePaged and ToneCount ~= 0 then
                 -- Create a temporary variable to add more text to
-                local NotificationText = "~g~søgning:~y~"
+                local NotificationText = "~g~search:~y~"
                 -- Loop though all the tones
                 for _, Tone in ipairs(ToBePaged) do
                     -- Add a tone to temporary string
@@ -670,17 +670,17 @@ function PagePagers(Args)
             -- If there is a mismatch, i.e. invalid/no tone/s provided
             else
                 -- Draw new notification on client's screen
-                NewNoti("~r~~h~Ugyldige toner, tjek venligst dine kommando argumenter.", true)
+                NewNoti("~r~~h~Invalid tones, please check your command arguments.", true)
             end
         -- If tones are already being paged
         else
             -- Draw new notification on client's screen
-            NewNoti("~r~~h~Toner er allerede blevet søget.", true)
+            NewNoti("~r~~h~Toner has already been searched.", true)
         end
     -- If player is not whitelisted
     else
         -- Draw error message on player screen
-        NewNoti("~r~Du er ikke whitelisted til denne kommando.", true)
+        NewNoti("~r~You are not whitelisted to this command.", true)
     end
 end
 
@@ -699,7 +699,7 @@ function SoundFireSiren(Args)
 						table.insert(ToBeSirened, ValidStation)
 						-- Station is already playing a siren
 					else
-						NewNoti("~r~~h~En eller flere medfølgende stationer lyder allerede!", true)
+						NewNoti("~r~~h~One or more supplied stations are already sounding!", true)
 						return
 					end
 				end
@@ -723,11 +723,11 @@ function SoundFireSiren(Args)
 			TriggerServerEvent("Fire-EMS-Pager:SoundSirens", ToBeSirened)
 		-- If there is a mismatch, i.e. invalid/no stations/s provided
 		else
-			NewNoti("~r~~h~Ugyldige stationer, der skal lyde, skal du kontrollere dine kommandoargumenter.", true)
+			NewNoti("~r~~h~Invalid stations to sound, check your command arguments.", true)
 		end
 	-- If player is not whitelisted
 	else
-		NewNoti("~r~Du er ikke whitelisted til denne kommando.", true)
+		NewNoti("~r~You are not whitelisted to this command.", true)
 	end
 end
 
@@ -738,8 +738,8 @@ function NewNoti(Text, Flash)
 		SetNotificationTextEntry("STRING")
 		-- Pass temporary variable to notification
 		AddTextComponentString(Text)
-		-- test 
-		SetNotificationMessage("CHAR_CALL911", "CHAR_CALL911", true, 1, "~y~Brandmand Information:~s~", "");
+		-- test
+		SetNotificationMessage("CHAR_CALL911", "CHAR_CALL911", true, 1, "~y~Firefighter Information:~s~", "");
 		-- Draw new notification on client's screen
 		DrawNotification(Flash, true)
 	end

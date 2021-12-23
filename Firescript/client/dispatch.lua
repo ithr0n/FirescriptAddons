@@ -1,7 +1,7 @@
 --================================--
---      FIRE SCRIPT v1.7.2       --
+--      FIRE SCRIPT v1.7.6        --
 --  by GIMI (+ foregz, Albo1125)  --
---  make some function ny Wick	  --
+--  make some function by Wick	  --
 --      License: GNU GPL 3.0      --
 --================================--
 Tones = {"fire", "medical"}
@@ -49,17 +49,22 @@ function Dispatch:create(dispatchNumber, coords)
 
     self:renderRoute(coords)
     
-    if Config.Dispatch.playSound then
-        Citizen.CreateThread(
-            function()
-                for i = 1, 3 do
-                    PlaySoundFromEntity(-1, "IDLE_BEEP", GetPlayerPed(-1), "EPSILONISM_04_SOUNDSET", 0)
-					exports["inferno-fire-ems-pager"]:PagePagers(Tones)
-                    Citizen.Wait(300)
-                end
-            end
-        )
-    end
+    --if Config.Dispatch.playSound then
+		if Config.Dispatch.playSoundv2 == "chat" or Config.Dispatch.playSoundv2 == "inferno" then
+			if Config.Dispatch.playSoundv2 == "chat" then
+				Citizen.CreateThread(
+					function()
+						for i = 1, 3 do
+							PlaySoundFromEntity(-1, "IDLE_BEEP", GetPlayerPed(-1), "EPSILONISM_04_SOUNDSET", 0)
+							Citizen.Wait(300)
+						end
+					end
+				)
+			elseif Config.Dispatch.playSoundv2 == "inferno" then
+				exports["inferno-fire-ems-pager"]:PagePagers(Tones)
+			end		
+		end
+    --end
 
 	FlashMinimapDisplay()
 
@@ -97,6 +102,13 @@ function Dispatch:clear(dispatchNumber)
 	if dispatchNumber and self.blips[dispatchNumber] and self.blips[dispatchNumber].blip then
 		RemoveBlip(self.blips[dispatchNumber].blip)
 		self.blips[dispatchNumber].blip = false
+	elseif dispatchNumber == 0 then
+		for k, v in pairs(self.blips) do
+			if self.blips[k].blip then
+				RemoveBlip(self.blips[k].blip)
+				self.blips[k].blip = false
+			end
+		end
 	end
 end
 

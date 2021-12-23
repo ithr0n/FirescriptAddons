@@ -1,7 +1,6 @@
 --================================--
---       FIRE SCRIPT v1.7.2      --
+--       FIRE SCRIPT v1.7.6       --
 --  by GIMI (+ foregz, Albo1125)  --
---  make some function ny Wick	  --
 --      License: GNU GPL 3.0      --
 --================================--
 
@@ -42,24 +41,27 @@ function Fire:create(coords, maximumSpread, spreadChance)
 			while spread do
 				Citizen.Wait(2000)
 				local index, flames = highestIndex(self.active, fireIndex)
-				if flames ~= 0 and flames <= maximumSpread then
+				if flames ~= 0 and flames <= maximumSpread and self.active[fireIndex] ~= nil then
 					for k, v in ipairs(self.active[fireIndex]) do
 						index, flames = highestIndex(self.active, fireIndex)
 						local rndSpread = math.random(100)
-						if count ~= 0 and flames <= maximumSpread and rndSpread <= spreadChance then
+						if flames <= maximumSpread and rndSpread <= spreadChance then
 							local x = self.active[fireIndex][k].x
 							local y = self.active[fireIndex][k].y
 							local z = self.active[fireIndex][k].z
 	
-							local xSpread = math.random(-2, 2)
-							local ySpread = math.random(-2, 2)
+							local xSpread = math.random(-3, 3)
+							local ySpread = math.random(-3, 3)
 	
 							coords = vector3(x + xSpread, y + ySpread, z)
 	
 							self:createFlame(fireIndex, coords)
+						elseif flames > maximumSpread then
+							spread = false
+							break
 						end
 					end
-				elseif flames == 0 then
+				elseif flames == 0 or self.active[fireIndex] == nil then
 					break
 				end
 			end
@@ -83,8 +85,18 @@ function Fire:remove(fireIndex)
 	if not (self.active[fireIndex] and next(self.active[fireIndex])) then
 		return false
 	end
+
 	self.active[fireIndex].stopSpread()
 	TriggerClientEvent('fireClient:removeFire', -1, fireIndex)
+
+	if self.activeBinds[fireIndex] then
+		self.binds[self.activeBinds[fireIndex]][fireIndex] = nil
+
+		if self.activeBinds[fireIndex] == self.currentRandom and next(self.binds[self.activeBinds[fireIndex]]) == nil then
+			self.currentRandom = nil
+		end
+	end
+
 	self.active[fireIndex] = {}
 	return true
 end
@@ -92,14 +104,8 @@ end
 function Fire:removeFlame(fireIndex, flameIndex)
 	if self.active[fireIndex] and self.active[fireIndex][flameIndex] then
 		self.active[fireIndex][flameIndex] = nil
-		if type(next(self.active[fireIndex])) == "string" and self.activeBinds[fireIndex] then
-			self.binds[self.activeBinds[fireIndex]][fireIndex] = nil
-
-			if self.activeBinds[fireIndex] == self.currentRandom and next(self.binds[self.activeBinds[fireIndex]]) == nil then
-				self.currentRandom = nil
-			end
-
-			self.activeBinds[fireIndex] = nil
+		if type(next(self.active[fireIndex])) == "string" then
+			self:remove(fireIndex)
 		end
 	end
 	TriggerClientEvent('fireClient:removeFlame', -1, fireIndex, flameIndex)
@@ -113,6 +119,7 @@ function Fire:removeAll()
 		end
 	end
 	self.active = {}
+	self.activeBinds = {}
 	self.binds = {}
 	self.currentRandom = nil
 end
@@ -155,9 +162,13 @@ function Fire:startRegistered(registeredFireID, triggerDispatch, dispatchPlayer)
 			Config.Dispatch.timeout,
 			function()
 				if Config.Dispatch.enabled then
-					Dispatch.expectingInfo[dispatchPlayer] = true
+					if self.registered[registeredFireID].message ~= nil then
+						Dispatch:create(self.registered[registeredFireID].message, dispatchCoords)
+					else
+						Dispatch.expectingInfo[dispatchPlayer] = true
+						TriggerClientEvent('fd:dispatch', dispatchPlayer, dispatchCoords)
+					end
 				end
-				TriggerClientEvent('fd:dispatch', dispatchPlayer, dispatchCoords)
 			end
 		)
 	end
@@ -247,7 +258,7 @@ function Fire:setRandom(registeredFireID, random)
 end
 
 function Fire:startSpawner(frequency, chance)
-	frequency = tonumber(frequency) or Config.Fire.spawner.frequency
+	frequency = tonumber(frequency) or Config.Fire.spawner.interval
 	chance = tonumber(chance) or Config.Fire.spawner.chance
 
 	if self._stopSpawner or not self.random or not frequency then
@@ -326,15 +337,3 @@ function Fire:updateRandom() -- Creates a table containing all fires with random
 		end
 	end
 end
-
-RegisterServerEvent('fireServer:ReturnCoords')
-AddEventHandler('fireServer:ReturnCoords', function(FiresReturn)
-    Fires = FiresReturn
-    FinalCoords = FiresReturn[1].coords
-    TriggerClientEvent('fireClient:StartFireClient', -1, Fires)
-end)
-
-RegisterServerEvent("fireServer:StartFire")
-AddEventHandler("fireServer:StartFire", function(sender, position, flames, radius)
-    TriggerClientEvent('fireClient:GetCoords', sender, position, flames, radius)
-end)

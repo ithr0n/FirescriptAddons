@@ -1,9 +1,9 @@
 --================================--
 --       FIRE SCRIPT v1.7.2       --
 --  by GIMI (+ foregz, Albo1125)  --
---  make some function ny Wick	  --
 --      License: GNU GPL 3.0      --
 --================================--
+
 Dispatch = {
 	_players = {},
 	_firefighters = {},
@@ -35,7 +35,7 @@ end
 function Dispatch:subscribe(serverId, isFirefighter)
 	serverId = tonumber(serverId)
 	self._players[serverId] = true
-	if not isFirefighter then
+	if isFirefighter then
 		self:addFirefighter(serverId)
 	end
 end

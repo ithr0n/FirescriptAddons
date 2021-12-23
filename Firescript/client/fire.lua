@@ -1,5 +1,5 @@
 --================================--
---       FIRE SCRIPT v1.7.2       --
+--       FIRE SCRIPT v1.7.6       --
 --  by GIMI (+ foregz, Albo1125)  --
 --  make some function ny Wick	  --
 --      License: GNU GPL 3.0      --
@@ -35,10 +35,12 @@ function Fire:removeFlame(fireIndex, flameIndex)
 	if not (fireIndex and flameIndex and self.active[fireIndex]) then
 		return
 	end
+
 	if self.active[fireIndex].flames[flameIndex] and self.active[fireIndex].flames[flameIndex] > -1 then
 		RemoveScriptFire(self.active[fireIndex].flames[flameIndex])
         self.active[fireIndex].flames[flameIndex] = nil
     end
+
 	if self.active[fireIndex].particles[flameIndex] and self.active[fireIndex].particles[flameIndex] ~= 0 then
 		local particles = self.active[fireIndex].particles[flameIndex]
 		Citizen.SetTimeout(
@@ -50,6 +52,7 @@ function Fire:removeFlame(fireIndex, flameIndex)
 		)
 		self.active[fireIndex].particles[flameIndex] = nil
 	end
+
 	if self.active[fireIndex].flameParticles[flameIndex] and self.active[fireIndex].flameParticles[flameIndex] ~= 0 then
 		local flameParticles = self.active[fireIndex].flameParticles[flameIndex]
 		Citizen.SetTimeout(
@@ -61,6 +64,7 @@ function Fire:removeFlame(fireIndex, flameIndex)
 		)
 		self.active[fireIndex].flameParticles[flameIndex] = nil
 	end
+	
 	self.active[fireIndex].flameCoords[flameIndex] = nil
 
 	if self.active[fireIndex] ~= nil and countElements(self.active[fireIndex].flames) < 1 then
@@ -74,7 +78,7 @@ function Fire:remove(fireIndex, callback)
 		return
 	end
 
-	for k, v in pairs(self.active[fireIndex].flames) do
+	for k, v in pairs(self.active[fireIndex].flameCoords) do
         self:removeFlame(fireIndex, k)
         Citizen.Wait(20)
 	end
@@ -83,7 +87,7 @@ function Fire:remove(fireIndex, callback)
 		200,
 		function()
 			if self.active[fireIndex] and next(self.active[fireIndex].flames) ~= nil then
-				print("ADVARSEL: En brand vedvarede!")
+				print("WARNING: A fire persisted!")
 				self:remove(fireIndex)
 			elseif callback then
 				callback(fireIndex)
@@ -131,14 +135,16 @@ Citizen.CreateThread(
 			for fireIndex, v in pairs(Fire.active) do
 				if countElements(v.particles) ~= 0 then
 					for flameIndex, _v in pairs(v.particles) do
-						local isFirePresent = GetNumberOfFiresInRange(
-							v.flameCoords[flameIndex].x,
-							v.flameCoords[flameIndex].y,
-							v.flameCoords[flameIndex].z,
-							0.05
-						)
-						if isFirePresent == 0 then
-							TriggerServerEvent('fireManager:removeFlame', fireIndex, flameIndex)
+						if v.flameCoords[flameIndex] ~= nil then
+							local isFirePresent = GetNumberOfFiresInRange(
+								v.flameCoords[flameIndex].x,
+								v.flameCoords[flameIndex].y,
+								v.flameCoords[flameIndex].z,
+								0.05
+							)
+							if isFirePresent == 0 then
+								TriggerServerEvent('fireManager:removeFlame', fireIndex, flameIndex)
+							end
 						end
 					end
 				end
@@ -151,18 +157,19 @@ Citizen.CreateThread(
 	function()
 		while true do
 			local pedCoords = GetEntityCoords(GetPlayerPed(-1))
-			while syncInProgress do
-				Citizen.Wait(10)
-			end
 			for fireIndex, v in pairs(Fire.active) do
 				for flameIndex, coords in pairs(Fire.active[fireIndex].flameCoords) do
 					Citizen.Wait(10)
-					if not syncInProgress and Fire.active[fireIndex] and Fire.active[fireIndex].flameCoords[flameIndex] and not Fire.active[fireIndex].particles[flameIndex] and #(coords - pedCoords) < 300.0 then
+					while syncInProgress do
+						Citizen.Wait(10)
+					end
+					syncInProgress = true
+					if Fire.active[fireIndex] and Fire.active[fireIndex].flameCoords[flameIndex] and not Fire.active[fireIndex].particles[flameIndex] and #(coords - pedCoords) < 300.0 then
 						local z = coords.z
 		
 						repeat
 							Wait(0)
-							ground, newZ = GetGroundZFor_3dCoord(coords.x, coords.y, z, 1)
+							ground, newZ = GetGroundZFor_3dCoord(coords.x, coords.y, z)
 							if not ground then
 								z = z + 0.1
 							end
@@ -212,6 +219,7 @@ Citizen.CreateThread(
 							Fire.active[fireIndex].flames[flameIndex] = nil
 						end
 					end
+					syncInProgress = false
 				end
 			end
 			Citizen.Wait(1500)

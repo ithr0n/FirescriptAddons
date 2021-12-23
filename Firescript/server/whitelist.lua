@@ -1,7 +1,6 @@
 --================================--
---       FIRE SCRIPT v1.7.2      --
+--       FIRE SCRIPT v1.6.10      --
 --  by GIMI (+ foregz, Albo1125)  --
---  make some function ny Wick	  --
 --      License: GNU GPL 3.0      --
 --================================--
 

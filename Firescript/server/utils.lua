@@ -1,7 +1,6 @@
 --================================--
---       FIRE SCRIPT v1.7.2       --
+--       FIRE SCRIPT v1.6.3       --
 --  by GIMI (+ foregz, Albo1125)  --
---  make some function ny Wick	  --
 --      License: GNU GPL 3.0      --
 --================================--
 
@@ -12,16 +11,16 @@ function checkVersion()
 			if tonumber(errorCode) == 200 then
 				data = json.decode(data)
 				if not data then
-					print("^3[FireScript]^7 Kunne ikke kontrollere versionen - ingen data blev returneret!")
+					print("^3[FireScript]^7 Couldn't check version - no data returned!")
 					return
 				end
 				if data.tag_name == "v" .. Version then
-					print("^2[FireScript]^7 Opdateret.")
+					print("^2[FireScript]^7 Up to date.")
 				else
-					print(("^3[FireScript]^7 Scriptet er ikke opdateret! Opdater venligst til version %s."):format(data.tag_name))
+					print(("^3[FireScript]^7 The script isn't up to date! Please update to version %s."):format(data.tag_name))
 				end
 			else
-				print(("^3[FireScript]^7 Kunne ikke kontrollere version! Fejlkode %s."):format(errorCode))
+				print(("^3[FireScript]^7 Couldn't check version! Error code %s."):format(errorCode))
 				print(LatestVersionFeed)
 			end
 		end,
@@ -36,17 +35,21 @@ end
 -- Chat
 
 function sendMessage(source, text, customName)
-	TriggerClientEvent(
-		"chat:addMessage",
-		source,
-		{
-			templateId = "firescript",
-			args = {
-				((customName ~= nil) and customName or ("FireScript v%s"):format(Version)),
-				text
+	if source > 0 then
+		TriggerClientEvent(
+			"chat:addMessage",
+			source,
+			{
+				templateId = "firescript",
+				args = {
+					((customName ~= nil) and customName or ("FireScript v%s"):format(Version)),
+					text
+				}
 			}
-		}
-	)
+		)
+	else
+		print(("[FireScript v%s] %s"):format(Version, text))
+	end
 end
 
 -- Table functions

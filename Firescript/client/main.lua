@@ -1,142 +1,149 @@
 --================================--
---       FIRE SCRIPT v1.7.2      --
+--      FIRE SCRIPT v1.7.6        --
 --  by GIMI (+ foregz, Albo1125)  --
---  make some function ny Wick	  --
+--  make some function by Wick	  --
 --      License: GNU GPL 3.0      --
 --================================--
 
-local syncInProgress = false
-
 Stations = {"els", "sls", "rh"}
+
 --================================--
 --              CHAT              --
 --================================--
 
 TriggerEvent("chat:addTemplate", "firescript", '<div style="text-indent: 0 !important; padding: 0.5vw; margin: 0.05vw; color: rgba(255,255,255,0.9);background-color: rgba(250,26,56, 0.8); border-radius: 4px;"><b>{0}</b> {1} </div>')
 
-TriggerEvent('chat:addSuggestion', '/startfire', 'Opretter en brand', {
+TriggerEvent('chat:addSuggestion', '/startfire', 'Creates a fire', {
 	{
-		name = "spredning",
-		help = "Hvor mange gange kan ilden spredes?"
+		name = "spread",
+		help = "How many times can the fire spread?"
 	},
 	{
 		name = "chance",
-		help = "0 - 100; Hvor hurtigt branden spredes?"
+		help = "0 - 100; How quickly the fire spreads?"
 	},
 	{
 		name = "dispatch",
-		help = "true eller false (Standard false)"
-	}
-})
-
-TriggerEvent('chat:addSuggestion', '/stopfire', 'Stop ilden', {
-	{
-		name = "index",
-		help = "Ilden's index (ID)"
-	}
-})
-
-TriggerEvent('chat:addSuggestion', '/stopallfires', 'Stop alle brande')
-
-TriggerEvent('chat:addSuggestion', '/registerfire', 'Registrerer en ny brandkonfiguration')
-
-TriggerEvent('chat:addSuggestion', '/addflame', 'Tilføjer en flamme til en registreret brand', {
-	{
-		name = "brandID",
-		help = "Den registrerede brand"
+		help = "true or false (default false)"
 	},
 	{
-		name = "spredning",
-		help = "Hvor mange gange kan flammen spredes?"
+		name = "dispatchMessage",
+		help = "Sets a custom dispatch message (leave empty to generate automatically)"
+	}
+})
+
+TriggerEvent('chat:addSuggestion', '/stopfire', 'Stops the fire', {
+	{
+		name = "index",
+		help = "The fire's index"
+	}
+})
+
+TriggerEvent('chat:addSuggestion', '/stopallfires', 'Stops all fires')
+
+TriggerEvent('chat:addSuggestion', '/registerscenario', 'Registers a new fire configuration')
+
+TriggerEvent('chat:addSuggestion', '/addflame', 'Adds a flame to a scenario', {
+	{
+		name = "scenarioID",
+		help = "The scenario"
+	},
+	{
+		name = "spread",
+		help = "How many times can the flame spread?"
 	},
 	{
 		name = "chance",
-		help = "Hvor mange ud af 100 chancer skal ilden sprede sig? (0-100)"
+		help = "How many out of 100 chances should the fire spread? (0-100)"
 	}
 })
 
-TriggerEvent('chat:addSuggestion', '/removeflame', 'Fjerner en flamme fra en registreret brand', {
+TriggerEvent('chat:addSuggestion', '/removeflame', 'Removes a flame from a scenario', {
 	{
-		name = "brandID",
-		help = "brand ID"
+		name = "scenarioID",
+		help = "The fire ID"
 	},
 	{
-		name = "flammeID",
-		help = "Flammen ID"
+		name = "flameID",
+		help = "The flame ID"
 	}
 })
 
-TriggerEvent('chat:addSuggestion', '/removefire', 'Fjerner en registreret brand', {
+TriggerEvent('chat:addSuggestion', '/removescenario', 'Removes a scenario', {
 	{
-		name = "brandID",
-		help = "brand ID"
+		name = "scenarioID",
+		help = "The fire ID"
 	}
 })
 
-TriggerEvent('chat:addSuggestion', '/startregisteredfire', 'Starter en registreret brand', {
+TriggerEvent('chat:addSuggestion', '/startscenario', 'Starts a scenario', {
 	{
-		name = "brandID",
-		help = "brand ID"
+		name = "scenarioID",
+		help = "The fire ID"
 	},
 	{
 		name = "triggerDispatch",
-		help = "true / false - skal scriptudløseren sendes efter spawning af ​​ilden? (Standard false)"
+		help = "true / false - should the script trigger dispatch after spawning the fire? (default false)"
 	}
 })
 
-TriggerEvent('chat:addSuggestion', '/stopregisteredfire', 'Stop en registreret brand', {
+TriggerEvent('chat:addSuggestion', '/stopscenario', 'Stops a scenario', {
 	{
-		name = "brandID",
-		help = "brand ID"
+		name = "scenarioID",
+		help = "The fire ID"
 	}
 })
 
-TriggerEvent('chat:addSuggestion', '/firewl', 'Administrerer whitelist til brandscript', {
+TriggerEvent('chat:addSuggestion', '/firewl', 'Manages the fire script whitelist', {
 	{
-		name = "handling",
+		name = "action",
 		help = "add / remove"
 	},
 	{
-		name = "BorgerID",
-		help = "Borger i server ID"
+		name = "playerID",
+		help = "The player's server ID"
 	}
 })
 
-TriggerEvent('chat:addSuggestion', '/firewlreload', 'Genindlæser whitelist fra konfigurationen')
+TriggerEvent('chat:addSuggestion', '/firewlreload', 'Reloads the whitelist from the config')
 
-TriggerEvent('chat:addSuggestion', '/firedispatch', 'Administrerer dispatch på brand script', {
+TriggerEvent('chat:addSuggestion', '/firedispatch', 'Manages the fire script dispatch subscribers', {
 	{
-		name = "handling",
-		help = "add / remove"
+		name = "action",
+		help = "add / remove / scenario (scenario = sets the scenario's dispatch message)"
 	},
 	{
-		name = "BorgerID",
-		help = "Borger i server ID"
+		name = "playerID / scenarioID",
+		help = "The player's server ID / the scenario's ID"
+	},
+	{
+		name = "dispatchMessage",
+		help = "(optional) Sets a custom dispatch message for the scenario (use only with par. #1 scenario; leave empty to remove previous custom message)"
 	}
 })
 
-TriggerEvent('chat:addSuggestion', '/remindme', 'Indstiller GPS-waypoint til det angivne dispatch.', {
+TriggerEvent('chat:addSuggestion', '/remindme', 'Sets the GPS waypoint to the specified dispatch call.', {
 	{
 		name = "dispatchID",
-		help = "brand id på map (nummer)"
+		help = "The dispatch identifier (number)"
 	}
 })
 
-TriggerEvent('chat:addSuggestion', '/cleardispatch', 'Rydder navigationen til det sidste dispatch.', {
+TriggerEvent('chat:addSuggestion', '/cleardispatch', 'Clears navigation to the last dispatch call.', {
 	{
 		name = "dispatchID",
-		help = "(valgfri) fjernes blip, hvis det er udfyldt."
+		help = "(optional) The dispatch identifier, if filled in, the call's blip will be removed. Set to 0 to remove all dispatch blips."
 	}
 })
 
-TriggerEvent('chat:addSuggestion', '/randomfires', 'Administrerer den tilfældige spawner', {
+TriggerEvent('chat:addSuggestion', '/randomfires', 'Manages the random fire spawner', {
 	{
-		name = "handling",
+		name = "action",
 		help = "add / remove / enable / disable"
 	},
 	{
 		name = "p2",
-		help = "(valgfri) For tilføj / fjern handling, udfyld det registrerede brand-ID."
+		help = "(optional) For add / remove action, fill in the scenario ID."
 	}
 })
 
@@ -145,18 +152,14 @@ TriggerEvent('chat:addSuggestion', '/randomfires', 'Administrerer den tilfældig
 --================================--
 
 RegisterNetEvent('playerSpawned')
-AddEventHandler(
-	'playerSpawned',
-	function()
+AddEventHandler('playerSpawned', function()
 		print("Requested synchronization..")
 		TriggerServerEvent('fireManager:requestSync')
 	end
 )
 
 RegisterNetEvent('onClientResourceStart')
-AddEventHandler(
-	'onClientResourceStart',
-	function(resourceName)
+AddEventHandler('onClientResourceStart', function(resourceName)
 		if resourceName == GetCurrentResourceName() then
 			-- Check the command whitelist
 			TriggerServerEvent('fireManager:checkWhitelist')
@@ -164,67 +167,154 @@ AddEventHandler(
 	end
 )
 
+
+--================================--
+-- DISPATCH ROUTE for AUTO-SUBSCRIBE  --
+--================================--
+
+if Config.Dispatch.Framework == "qb" then
+	QBCore = exports['qb-core']:GetCoreObject()
+	local PlayerJob = {}
+	local onDuty = false
+	
+	-- old
+	--QBCore = nil
+	--TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
+
+	--
+
+	AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+		local player = QBCore.Functions.GetPlayerData()
+		PlayerJob = player.job
+		onDuty = player.job.onduty
+		if (Config.Fire.spawner.firefighterJobs) then
+		TriggerServerEvent("fire:server:firedispatch", source)
+		end
+	end)
+
+	RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
+		onDuty = false
+		if (Config.Fire.spawner.firefighterJobs) then
+		TriggerServerEvent("fire:off:firedispatch", source)
+		end
+	end)
+
+	RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
+		PlayerJob = JobInfo
+		if (Config.Fire.spawner.firefighterJobs) then
+			if PlayerJob.onduty then
+				TriggerServerEvent("fire:server:firedispatch", source)
+				onDuty = false
+			end
+		end
+	end)
+end
+
+
 --================================--
 --            COMMANDS            --
 --================================--
 
-RegisterCommand(
-	'remindme',
-	function(source, args, rawCommand)
+RegisterCommand('remindme', function(source, args, rawCommand)
 		local dispatchNumber = tonumber(args[1])
 		if not dispatchNumber then
-			sendMessage("Ugyldigt argument.")
+			sendMessage("Invalid argument.")
 			return
 		end
 
 		local success = Dispatch:remind(dispatchNumber)
 
 		if not success then
-			sendMessage("Kunne ikke finde den angivne Dispatch.")
+			sendMessage("Couldn't find the specified dispatch.")
 			return
 		end
 	end,
 	false
 )
 
-RegisterCommand(
-	'cleardispatch',
+RegisterCommand('cleardispatch',
 	function(source, args, rawCommand)
 		Dispatch:clear(tonumber(args[1]))
 	end,
 	false
 )
 
-RegisterCommand(
-	'startfire',
-	function(source, args, rawCommand)
-		local maxSpread = tonumber(args[1])
-		local probability = tonumber(args[2])
-		local triggerDispatch = args[3] == "true"
+RegisterCommand('startfire', function(source, args, rawCommand)
+	local maxSpread = tonumber(args[1])
+	local probability = tonumber(args[2])
+	local triggerDispatch = args[3] == "true"
 
-		TriggerServerEvent('fireManager:command:startfire', GetEntityCoords(GetPlayerPed(-1)), maxSpread, probability, triggerDispatch)
+	table.remove(args, 1)
+	table.remove(args, 1)
+	table.remove(args, 1)
+
+	local dispatchMessage = next(args) and table.concat(args, " ") or nil
+
+	TriggerServerEvent('fireManager:command:startfire', GetEntityCoords(GetPlayerPed(-1)), maxSpread, probability, triggerDispatch, dispatchMessage)
 	end,
 	false
 )
 
-RegisterCommand(
-	'registerfire',
-	function(source, args, rawCommand)
-		TriggerServerEvent('fireManager:command:registerfire', GetEntityCoords(GetPlayerPed(-1)))
+RegisterCommand('registerscenario', function(source, args, rawCommand)
+	local coords = nil
+
+	local x = tonumber(args[1])
+	local y = tonumber(args[2])
+	local z = tonumber(args[3])
+
+	if x and y and z then
+		coords = vector3(x, y, z)
+	end
+
+	TriggerServerEvent('fireManager:command:registerscenario', coords or GetEntityCoords(GetPlayerPed(-1)))
 	end,
 	false
 )
 
-RegisterCommand(
-	'addflame',
-	function(source, args, rawCommand)
-		local registeredFireID = tonumber(args[1])
-		local spread = tonumber(args[2])
-		local chance = tonumber(args[3])
+RegisterCommand('addflame', function(source, args, rawCommand)
+	local registeredFireID = tonumber(args[1])
+	local spread = tonumber(args[2])
+	local chance = tonumber(args[3])
 
-		if registeredFireID and spread and chance then
-			TriggerServerEvent('fireManager:command:addflame', registeredFireID, GetEntityCoords(GetPlayerPed(-1)), spread, chance)
-		end
+	local coords = nil
+
+	local x = tonumber(args[4])
+	local y = tonumber(args[5])
+	local z = tonumber(args[6])
+
+	if x and y and z then
+		coords = vector3(x, y, z)
+	end
+
+	if registeredFireID and spread and chance then
+		TriggerServerEvent('fireManager:command:addflame', registeredFireID, coords or GetEntityCoords(GetPlayerPed(-1)), spread, chance)
+	end
+  end,
+	false
+)
+
+-- Aliases
+
+RegisterCommand('registerfire', function(source, args, rawCommand)
+	ExecuteCommand("registerscenario" .. rawCommand:sub(13))
+	end,
+	false
+)
+
+RegisterCommand('removeregisteredfire', function(source, args, rawCommand)
+	ExecuteCommand("removescenario" .. rawCommand:sub(21))
+	end,
+	false
+)
+
+RegisterCommand('startregisteredfire', function(source, args, rawCommand)
+	ExecuteCommand("startscenario" .. rawCommand:sub(20))
+	end,
+	false
+)
+
+RegisterCommand('stopregisteredfire', function(source, args, rawCommand)
+	ExecuteCommand("stopscenario" .. rawCommand:sub(19))
 	end,
 	false
 )
@@ -234,87 +324,98 @@ RegisterCommand(
 --================================--
 
 RegisterNetEvent('fireClient:synchronizeFlames')
-AddEventHandler(
-	'fireClient:synchronizeFlames',
-	function(fires)
-		syncInProgress = true
-		Fire:removeAll(
-			function()
-				for k, v in pairs(fires) do
-					for _k, _v in ipairs(v) do
-						Fire:createFlame(k, _k, _v)
-					end
-				end
-				syncInProgress = false
+AddEventHandler('fireClient:synchronizeFlames', function(fires)
+	syncInProgress = true
+	Fire:removeAll(function()
+		for k, v in pairs(fires) do
+			for _k, _v in ipairs(v) do
+				Fire:createFlame(k, _k, _v)
 			end
-		)
-	end
-)
+		end
+		syncInProgress = false
+	end)
+end)
 
 RegisterNetEvent('fireClient:removeFire')
-AddEventHandler(
-	'fireClient:removeFire',
-	function(fireIndex)
-		while syncInProgress do
-			Citizen.Wait(10)
-		end
-		Fire:remove(fireIndex)
+AddEventHandler('fireClient:removeFire', function(fireIndex)
+	while syncInProgress do
+		Citizen.Wait(10)
 	end
-)
+	syncInProgress = true
+	Fire:remove(fireIndex)
+	syncInProgress = false
+end)
 
 RegisterNetEvent('fireClient:removeAllFires')
-AddEventHandler(
-	'fireClient:removeAllFires',
-	function()
-		while syncInProgress do
-			Citizen.Wait(10)
-		end
-		Fire:removeAll()
+AddEventHandler('fireClient:removeAllFires', function()
+	while syncInProgress do
+		Citizen.Wait(10)
 	end
-)
+	syncInProgress = true
+	Fire:removeAll(function()
+		syncInProgress = false
+	end)
+end)
 
 RegisterNetEvent("fireClient:removeFlame")
-AddEventHandler(
-    "fireClient:removeFlame",
-	function(fireIndex, flameIndex)
-		while syncInProgress do
-			Citizen.Wait(10)
-		end
-		Fire:removeFlame(fireIndex, flameIndex)
-    end
-)
+AddEventHandler("fireClient:removeFlame", function(fireIndex, flameIndex)
+	while syncInProgress do
+		Citizen.Wait(10)
+	end
+	syncInProgress = true
+	Fire:removeFlame(fireIndex, flameIndex)
+	syncInProgress = false
+end)
 
 RegisterNetEvent("fireClient:createFlame")
-AddEventHandler(
-    "fireClient:createFlame",
-	function(fireIndex, flameIndex, coords)
-		syncInProgress = true
-		Fire:createFlame(fireIndex, flameIndex, coords)
-		syncInProgress = false
-    end
-)
+AddEventHandler("fireClient:createFlame", function(fireIndex, flameIndex, coords)
+	while syncInProgress do
+		Citizen.Wait(10)
+	end
+	syncInProgress = true
+	Fire:createFlame(fireIndex, flameIndex, coords)
+	syncInProgress = false
+end)
 
 -- Dispatch
 
 if Config.Dispatch.enabled == true then
 	RegisterNetEvent('fd:dispatch')
-	AddEventHandler(
-		'fd:dispatch',
-		function(coords)
-			local streetName, crossingRoad = GetStreetNameAtCoord(coords.x, coords.y, coords.z)
-			local streetName = GetStreetNameFromHashKey(streetName)
-			local text = ("En brand brød ud ved %s."):format((crossingRoad > 0) and streetName .. " / " .. GetStreetNameFromHashKey(crossingRoad) or streetName)
-			TriggerServerEvent('fireDispatch:create', text, coords)
+	AddEventHandler('fd:dispatch', function(coords)
+		local streetName, crossingRoad = GetStreetNameAtCoord(coords.x, coords.y, coords.z)
+		local streetName = GetStreetNameFromHashKey(streetName)
+		
+		-- TEST --
+		if Config.Dispatch.playSoundv2 == "chat" or Config.Dispatch.playSoundv2 == "inferno" then
+			if Config.Dispatch.playSoundv2 == "chat" then
+				
+				local text = ("A fire broke out at %s."):format((crossingRoad > 0) and streetName .. " / " .. GetStreetNameFromHashKey(crossingRoad) or streetName)
+				TriggerServerEvent('fireDispatch:create', text, coords)
 			
-			exports["inferno-fire-ems-pager"]:SoundFireSiren(Stations)
+			elseif Config.Dispatch.playSoundv2 == "inferno" then
+				-- is you have core_dispatch
+				
+				--[[
+				TriggerServerEvent("core_dispatch:addCall",
+					"10-10",
+					"FIRE",
+					{{icon = "fas fa-fire", info = "A fire broke out at " ..streetName}},
+					{coords[1], coords[2], coords[3]},
+					"fire",
+					10000,
+					436,
+					5
+				)
+				--]]
+				local text = ("A fire broke out at %s."):format((crossingRoad > 0) and streetName .. " / " .. GetStreetNameFromHashKey(crossingRoad) or streetName)
+				TriggerServerEvent('fireDispatch:create', text, coords)
+				exports["inferno-fire-ems-pager"]:SoundFireSiren(Stations)
+			end
 		end
-	)
+	end)
 end
 
 RegisterNetEvent('fireClient:createDispatch')
-AddEventHandler(
-	'fireClient:createDispatch',
-	function(dispatchNumber, coords)
-		Dispatch:create(dispatchNumber, coords)
-	end
-)
+AddEventHandler('fireClient:createDispatch', function(dispatchNumber, coords)
+	Dispatch:create(dispatchNumber, coords)
+end)
