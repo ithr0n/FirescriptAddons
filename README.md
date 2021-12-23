@@ -45,14 +45,14 @@ add exec "resources/[Firescript addons]\inferno-fire-ems-pager/inferno-fire-ems-
 
 1, add it
 
-
+```
 RegisterNetEvent('Toggle:LSFDDuty')
 AddEventHandler('Toggle:LSFDDuty', function()
     onDuty = not onDuty
     TriggerServerEvent("QBCore:ToggleDuty")
     TriggerServerEvent("fire:server:firedispatch", source) -- for firecall 
 end)
-
+```
 
 # for vrp
 
