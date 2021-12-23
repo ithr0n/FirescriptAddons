@@ -20,11 +20,10 @@ https://www.youtube.com/watch?v=ugzoOLsgEt0 (Now)
 
 - start inferno-fire-ems-pager
 
-- start inferno-fire-alarm
+- start inferno-pass-alarm
 
 - start inferno-ladders 
 
-- FireExplosion (not full done)
 
 add exec "resources/[Firescript addons]\inferno-fire-ems-pager/inferno-fire-ems-pager.cfg" to server.cfg
 
@@ -37,9 +36,9 @@ add exec "resources/[Firescript addons]\inferno-fire-ems-pager/inferno-fire-ems-
 
 # LondonStudios for make HoseLS
 
-# If using ESX
+# If using ESX / QBCore
 
-1, go to config.lua line 18 and 30
+1, go to config.lua line 18 and 32
 
 
 # for vrp
