@@ -12,13 +12,15 @@
 [Firescript addons] all in one addons
 
 
-
 # Credits
 
 
-- Albo1125 and foregz - gimicze
+[thanks to Albo1125](https://github.com/Albo1125/FireScript) for make Firescript
+
+[thanks to gimicze](https://github.com/gimicze/firescript) for use his Firescript
 
 [thanks to inferno-collection](https://github.com/inferno-collection) for make Addons
 
-# LondonStudios for make HoseLS
+[thanks to LondonStudios](https://github.com/LondonStudios/HoseLS) for make HoseLS
+
 
