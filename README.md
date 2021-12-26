@@ -4,14 +4,23 @@
 [![Latest release](https://img.shields.io/github/v/release/gimicze/firescript?style=for-the-badge)](https://github.com/Wick89/FirescriptAddons/releases "Latest release")
 [![Total downloads](https://img.shields.io/github/downloads/gimicze/firescript/total?style=for-the-badge)](https://github.com/Wick89/FirescriptAddons/releases "Total downloads")
 
+[wiki](https://github.com/Wick89/FirescriptAddons/wiki)
 
 # FirescriptAddons
 [Firescript addons] all in one addons
 
-https://www.youtube.com/watch?v=9GNn7LMddy8 (a year ago)
+- make a map [Firescript addons]
 
-https://www.youtube.com/watch?v=ugzoOLsgEt0 (Now)
-
+- add it in map
+```
+Firescript
+HoseLS
+saw
+inferno-fire-ems-pager
+inferno-pass-alarm
+inferno-ladders
+```
+ 
 - start Firescript
 
 - start HoseLS
