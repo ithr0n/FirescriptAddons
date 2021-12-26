@@ -4,7 +4,9 @@
 [![Latest release](https://img.shields.io/github/v/release/gimicze/firescript?style=for-the-badge)](https://github.com/Wick89/FirescriptAddons/releases "Latest release")
 [![Total downloads](https://img.shields.io/github/downloads/gimicze/firescript/total?style=for-the-badge)](https://github.com/Wick89/FirescriptAddons/releases "Total downloads")
 
+# wiki
 [wiki](https://github.com/Wick89/FirescriptAddons/wiki)
+- is you need help
 
 # FirescriptAddons
 [Firescript addons] all in one addons
