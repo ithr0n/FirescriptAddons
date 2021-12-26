@@ -531,7 +531,7 @@ if Config.Dispatch.Framework == "esx" or Config.Dispatch.Framework == "qb" then
 					Dispatch:unsubscribe(source)
 				end
 			end)
-        elseif Config.Dispatch.Framework == "sl" then
+        elseif Config.Dispatch.Framework == "qb" then
 		
 			local firefighterJobs = Config.Fire.spawner.firefighterJobs or {}
 		
