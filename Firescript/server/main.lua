@@ -533,47 +533,49 @@ if Config.Dispatch.Framework == "esx" or Config.Dispatch.Framework == "qb" then
 			end)
         elseif Config.Dispatch.Framework == "qb" then
 		
-			local firefighterJobs = Config.Fire.spawner.firefighterJobs or {}
-		
-			if type(Config.Fire.spawner.firefighterJobs) == "table" then
-				for k, v in pairs(Config.Fire.spawner.firefighterJobs) do
-				   firefighterJobs[Config.Fire.spawner.firefighterJobs] = true
+		local firefighterJobs = Config.Fire.spawner.firefighterJobs or {}
+
+		if type(Config.Fire.spawner.firefighterJobs) == "table" then
+			for k, v in pairs(Config.Fire.spawner.firefighterJobs) do
+			   firefighterJobs[Config.Fire.spawner.firefighterJobs] = true
+			end
+		end
+
+		RegisterServerEvent('fire:server:firedispatch')
+		AddEventHandler('fire:server:firedispatch', function(source)
+			local src = source
+
+			for k, v in pairs(QBCore.Functions.GetPlayers()) do
+				local Player = QBCore.Functions.GetPlayer(v)
+				if Player ~= nil then 
+					if (Config.Fire.spawner.firefighterJobs and Player.PlayerData.job.onduty) then
+						Dispatch:subscribe(v, firefighterJobs)
+						TriggerClientEvent('QBCore:Notify', v, 'Your subscribe to fire call!', 'ambulance')
+						--TriggerClientEvent('QBCore:Notify', src, 'Your subscribe to fire call!', 'ambulance')
+					elseif (Config.Fire.spawner.firefighterJobs) then
+						Dispatch:unsubscribe(v)
+						TriggerClientEvent('QBCore:Notify', v, 'Your unsubscribe from fire call!', 'ambulance')
+						--TriggerClientEvent('QBCore:Notify', src, 'Your unsubscribe from fire call!', 'ambulance')	
+					end
 				end
 			end
-			
-			RegisterServerEvent('fire:server:firedispatch')
-			AddEventHandler('fire:server:firedispatch', function(source)
-				local src = source
-		
-				for k, v in pairs(QBCore.Functions.GetPlayers()) do
-					local Player = QBCore.Functions.GetPlayer(v)
-					if Player ~= nil then 
-						if (Config.Fire.spawner.firefighterJobs and Player.PlayerData.job.onduty) then
-							Dispatch:subscribe(v, firefighterJobs)
-TriggerClientEvent('QBCore:Notify', src, 'Your subscribe to fire call!', 'ambulance')
-							QBCore.Functions.Notify("Your subscribe to fire call!", "success")
-						elseif (Config.Fire.spawner.firefighterJobs) then
-							Dispatch:unsubscribe(v)
-							QBCore.Functions.Notify("Your unsubscribe from fire call!", "error")
-						end
+		end)
+
+		RegisterServerEvent('fire:off:firedispatch')
+		AddEventHandler('fire:off:firedispatch', function(source)
+			local src = source
+
+			for k, v in pairs(SLCore.Functions.GetPlayers()) do
+				local Player = SLCore.Functions.GetPlayer(v)
+				if Player ~= nil then 
+					if (Config.Fire.spawner.firefighterJobs) then
+						Dispatch:unsubscribe(v)
+						TriggerClientEvent('QBCore:Notify', v, 'Your unsubscribe from fire call!', 'ambulance')
+						--TriggerClientEvent('QBCore:Notify', src, 'Your unsubscribe from fire call!', 'ambulance')	
 					end
 				end
-			end)
-			
-			RegisterServerEvent('fire:off:firedispatch')
-			AddEventHandler('fire:off:firedispatch', function(source)
-				local src = source
-		
-				for k, v in pairs(SLCore.Functions.GetPlayers()) do
-					local Player = SLCore.Functions.GetPlayer(v)
-					if Player ~= nil then 
-						if (Config.Fire.spawner.firefighterJobs) then
-							Dispatch:unsubscribe(v)
-							QBCore.Functions.Notify("Your unsubscribe from fire call!", "error")
-						end
-					end
-				end
-			end)
+			end
+		end)
         end
     end
 end
