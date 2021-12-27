@@ -550,6 +550,7 @@ if Config.Dispatch.Framework == "esx" or Config.Dispatch.Framework == "qb" then
 					if Player ~= nil then 
 						if (Config.Fire.spawner.firefighterJobs and Player.PlayerData.job.onduty) then
 							Dispatch:subscribe(v, firefighterJobs)
+TriggerClientEvent('QBCore:Notify', src, 'Your subscribe to fire call!', 'ambulance')
 							QBCore.Functions.Notify("Your subscribe to fire call!", "success")
 						elseif (Config.Fire.spawner.firefighterJobs) then
 							Dispatch:unsubscribe(v)
