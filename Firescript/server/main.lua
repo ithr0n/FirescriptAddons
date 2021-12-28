@@ -533,11 +533,11 @@ if Config.Dispatch.Framework == "esx" or Config.Dispatch.Framework == "qb" then
 			end)
         elseif Config.Dispatch.Framework == "qb" then
 		
-			local firefighterJobs = Config.fireJobs or {}
+			local firefighterJobs = Config.Dispatch.enableJob or {}
 		
-			if type(Config.fireJobs) == "table" then
-				for k, v in pairs(Config.fireJobs) do
-				   firefighterJobs[Config.fireJobs] = true
+			if type(Config.Dispatch.enableJob) == "table" then
+				for k, v in pairs(Config.Dispatch.enableJob) do
+				   firefighterJobs[Config.Dispatch.enableJob] = true
 				end
 			end
 		
@@ -549,10 +549,10 @@ if Config.Dispatch.Framework == "esx" or Config.Dispatch.Framework == "qb" then
 				for k, v in pairs(QBCore.Functions.GetPlayers()) do
 					local Player = QBCore.Functions.GetPlayer(v)
 					if Player ~= nil then 
-						if Config.fireJobs and Player.PlayerData.job.onduty then
+						if Config.Dispatch.enableJob and Player.PlayerData.job.onduty then
 							Dispatch:subscribe(v, firefighterJobs)
 							TriggerClientEvent('QBCore:Notify', v, "Your subscribe to fire call!", 'success')
-						elseif Config.fireJobs then
+						elseif Config.Dispatch.enableJob then
 							Dispatch:unsubscribe(v)
 							TriggerClientEvent('QBCore:Notify', v, "Your unsubscribe from fire call!", 'error')
 						end
@@ -567,7 +567,7 @@ if Config.Dispatch.Framework == "esx" or Config.Dispatch.Framework == "qb" then
 				for k, v in pairs(SLCore.Functions.GetPlayers()) do
 					local Player = SLCore.Functions.GetPlayer(v)
 					if Player ~= nil then 
-						if Config.fireJobs then
+						if Config.Dispatch.enableJob then
 							Dispatch:unsubscribe(v)
 							TriggerClientEvent('QBCore:Notify', v, "Your unsubscribe from fire call!", 'error')
 						end
