@@ -15,11 +15,15 @@ Config.Fire = {
         interval = 900000, -- Random fire spawn interval (set to nil or false if you don't want to spawn random fires) in ms
         chance = 50, -- Fire spawn chance (out of 100 chances, how many lead to spawning a fire?); Set to values between 1-100
         players = 1, -- Sets the minimum number of players subscribed to dispatch for the spawner to spawn fires.
-        firefighterJobs = { -- If using ESX or QB (Config.Dispatch.Framework), you can specify which players will count as firefighters in Config.Fire.spawner.players above; If not using ESX or QB you can set this to nil
-            ["ambulance"] = true -- QB is "ambulance" or esx job is "fd"
+		firefighterJobs = { -- If using ESX (Config.Dispatch.Framework), you can specify which players will count as firefighters in Config.Fire.spawner.players above; If not using ESX you can set this to nil
+            ["fd"] = true -- only for ESX!
         }
     }
 }
+
+-- only for QBCore!
+-- you can specify which players will count as firefighters in Config.Fire.spawner.players above; If not using QBCore you can set this to nil
+Config.fireJobs = "fire"
 
 Config.Dispatch = {
     enabled = true, -- Set this to false if you don't want to use the default dispatch system

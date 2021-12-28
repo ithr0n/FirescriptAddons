@@ -174,39 +174,34 @@ AddEventHandler('onClientResourceStart', function(resourceName)
 
 if Config.Dispatch.Framework == "qb" then
 	QBCore = exports['qb-core']:GetCoreObject()
-	local PlayerJob = {}
-	local onDuty = false
+	PlayerJob = {}
+	onDuty = false
 	
-	-- old
-	--QBCore = nil
-	--TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
-
-	--
-
-	AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-		local player = QBCore.Functions.GetPlayerData()
-		PlayerJob = player.job
-		onDuty = player.job.onduty
-		if (Config.Fire.spawner.firefighterJobs) then
-		TriggerServerEvent("fire:server:firedispatch", source)
-		end
+	-- is you log in
+	RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
+		QBCore.Functions.GetPlayerData(function(PlayerData)
+			PlayerJob = PlayerData.job
+				if PlayerData.job.name == Config.fireJobs then
+					TriggerServerEvent("fire:server:firedispatch", source)
+				end
+		end)
 	end)
 
+	-- is you logoff
 	RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
-		onDuty = false
-		if (Config.Fire.spawner.firefighterJobs) then
-		TriggerServerEvent("fire:off:firedispatch", source)
-		end
+		QBCore.Functions.GetPlayerData(function(PlayerData)
+			PlayerJob = PlayerData.job
+			if PlayerData.job.onduty then
+				if PlayerData.job.name == Config.fireJobs then
+					TriggerServerEvent("QBCore:ToggleDuty")
+					TriggerServerEvent("fire:off:firedispatch", source)
+				end
+			end
+		end)
 	end)
-
+	-- made a onduty function -- see more in https://github.com/Wick89/FirescriptAddons/wiki/qb-target---eyes
 	RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
 		PlayerJob = JobInfo
-		if (Config.Fire.spawner.firefighterJobs) then
-			if PlayerJob.onduty then
-				TriggerServerEvent("fire:server:firedispatch", source)
-				onDuty = false
-			end
-		end
 	end)
 end
 
